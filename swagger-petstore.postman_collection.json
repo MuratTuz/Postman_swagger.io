@@ -1,0 +1,480 @@
+{
+	"info": {
+		"_postman_id": "db05bc3d-2549-474d-8825-8873364d0bad",
+		"name": "swagger-petstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{baseURL}}/pet/findByStatus?status={{findByStatus}}",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							"",
+							"postman.setEnvironmentVariable(\"findByStatus\", 'available,pending,sold');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Variable name findByStatus is just only declared in pre-request script",
+							"pm.test(\"Response string must include 'pending'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"pending\");",
+							"});",
+							"pm.test(\"Response string must include 'available'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"available\");",
+							"});",
+							"pm.test(\"Response string must include 'sold'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"sold\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet/findByStatus?status={{findByStatus}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "{{findByStatus}}"
+						}
+					]
+				},
+				"description": "GET findByStatus. The variable is findByStatus is just only declared as a string array since it is not possible to declare in variable section"
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet/{petId}",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"petId must equal given petId value\", function () {",
+							"    var temp = request.url.split('/');",
+							"    const getPetId = parseInt(temp[temp.length-1]);",
+							"",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.id).to.eql(parseInt(getPetId));",
+							"    console.log(responseJson);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet/3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"3"
+					]
+				},
+				"description": "Get pet object regarding petId value."
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"petName must equal the name value in request body object \", function () {",
+							"    var req = JSON.parse(request.data);",
+							"    const petName = req.name;",
+							"    console.log(petName);",
+							"",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.name).to.eql(petName);",
+							"    console.log(responseJson.name);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 0,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"murat in kopegi\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet/{petId}",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "yeni kopek",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "pending",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet/5",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet/{petId}",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Variable name findByStatus is just only declared in pre-request script",
+							"pm.test(\"The object with given Id has been deleted '\", function () {",
+							"    ",
+							"    var temp = request.url.split('/');",
+							"    const getPetId = temp[temp.length-1];",
+							"",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.message).to.eql(getPetId);",
+							"    console.log(responseJson);",
+							"    ",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "murat",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "api_key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/pet/9222968140497518147",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"9222968140497518147"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet/{petId}/uploadImage",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Variable name findByStatus is just only declared in pre-request script",
+							"pm.test(\"Response string must include 'pending'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"pending\");",
+							"});",
+							"pm.test(\"Response string must include 'available'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"available\");",
+							"});",
+							"pm.test(\"Response string must include 'sold'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"sold\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "yeni kopek",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "pending",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet/9222968140497518311",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"9222968140497518311"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "b66f60d8-0796-465d-bb41-b1d053ad108d",
+			"key": "baselURL",
+			"value": "https://petstore.swagger.io/#/pet",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
