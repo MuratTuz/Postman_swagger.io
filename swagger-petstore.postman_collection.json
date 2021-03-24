@@ -267,21 +267,21 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
+						"value": "application/x-www-form-urlencoded",
 						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
+					"mode": "urlencoded",
+					"urlencoded": [
 						{
 							"key": "name",
-							"value": "yeni kopek",
+							"value": "yeni köpek",
 							"type": "text"
 						},
 						{
 							"key": "status",
-							"value": "pending",
+							"value": "sold",
 							"type": "text"
 						}
 					],
@@ -292,13 +292,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/pet/5",
+					"raw": "{{baseURL}}/pet/9222968140497532602",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"pet",
-						"5"
+						"9222968140497532602"
 					]
 				}
 			},
@@ -466,11 +466,93 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "{{baseURL}}/pet/findByStatus by querry params",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "330cf95a-9c83-4f32-b9f9-286966b7137b",
+						"exec": [
+							"",
+							"postman.setEnvironmentVariable(\"findByStatus\", 'available,pending,sold');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1019381f-37e0-459d-b91c-0336d8aceedb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Variable name findByStatus is just only declared in pre-request script",
+							"pm.test(\"Response string must include 'pending'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"pending\");",
+							"});",
+							"pm.test(\"Response string must include 'available'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"available\");",
+							"});",
+							"pm.test(\"Response string must include 'sold'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"sold\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/pet/findByStatus?status={{findByStatus}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "{{findByStatus}}"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
 		{
-			"id": "b66f60d8-0796-465d-bb41-b1d053ad108d",
+			"id": "2227d223-8367-485b-a418-e1de63a8a4d5",
 			"key": "baselURL",
 			"value": "https://petstore.swagger.io/#/pet",
 			"type": "string"
